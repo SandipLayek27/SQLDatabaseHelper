@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
-        sqLiteHelperTableData.createFullStructuredTable();
+        if(sqLiteHelperTableData.createFullStructuredTable()){
+            Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+        }
     }
 }
