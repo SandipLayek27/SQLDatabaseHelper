@@ -1,6 +1,5 @@
-package com.example.android.sqlitedbhelper;
+package com.example.sqlitehelper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
@@ -9,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 

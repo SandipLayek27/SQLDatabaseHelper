@@ -1,4 +1,4 @@
-package com.example.android.sqlitedbhelper;
+package com.example.sqlitehelper;
 
 public class HelperClass {
 

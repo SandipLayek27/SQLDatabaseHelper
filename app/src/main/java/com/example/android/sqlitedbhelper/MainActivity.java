@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.sqlitehelper.SQLiteHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("name","ARUNAVA");
             jsonObject.put("address","KOLKATA");
             jsonObject.put("pincode",722121);
-            jsonObject.put("mobile","7070696997");
+            jsonObject.put("mobile","1234567890");
             jsonArray.put(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
