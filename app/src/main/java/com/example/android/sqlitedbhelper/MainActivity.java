@@ -34,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("pincode",722121);
             jsonObject.put("mobile","1234567890");
             jsonArray.put(jsonObject);
+
+            jsonObject = new JSONObject();
+            jsonObject.put("name","MUGDHO");
+            jsonObject.put("address","KOLKATA");
+            jsonObject.put("pincode",722121);
+            jsonObject.put("mobile","9876543210");
+            jsonArray.put(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
