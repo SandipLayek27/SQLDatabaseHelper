@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SQLiteDBHelper</string>
+    <string name="end_syntax">);</string>
+</resources>
