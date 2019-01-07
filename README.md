@@ -28,6 +28,9 @@ dependencies {
 
 # ★ Features are
 1. JSONArray to LOCAL DATABASE Storage [THIS LIBRARY CAN AUTOMATICALLY CREATE DATABASE, CREATE TABLE AND INSERT DATA SUCCESSFULLY].
+2. Fetch all  from Local Database (JSONArray Formated).
+3. Fetch data from Database using Id (JSONObject Formated).
+4. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).
 
 # ★ Uses of above Features
 * 1. JSONArray to LOCAL DATABASE Storage.
@@ -67,5 +70,38 @@ dependencies {
       Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
   }
         
+```
+
+* 2 Fetch all  from Local Database (JSONArray Formated).
+```
+SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
+if(jsonArrayData != null){
+    Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
+}
+```
+
+* 3 Fetch data from Database using Id (JSONObject Formated).
+```
+SQLiteHelper sqLiteHelperFetchById = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+JSONObject jsonObject = sqLiteHelperFetchById.fetchById();
+if(jsonObject != null){
+    Toast.makeText(this, ""+jsonObject.toString(), Toast.LENGTH_SHORT).show();
+}
+```
+
+* 4 Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case)
+```
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","name","SANDIP");
+JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
+if(jsonArrayData != null){
+    Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
+}
+
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722101);
+JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
+if(jsonArrayData != null){
+    Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
+}
 ```
 
