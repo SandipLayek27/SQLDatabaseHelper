@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
         //FETCH DAMMY DATA
         JSONArray jsonArray = fetchDammyData();
-
-
         //CREATE FULL STRUCTURED TABLE
         SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
         if(sqLiteHelperTableData.createFullStructuredTable()){
@@ -40,12 +38,26 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //FETCH TABLE DATA USING ID
-        SQLiteHelper sqLiteHelperFetchById = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+        /*SQLiteHelper sqLiteHelperFetchById = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
         JSONObject jsonObject = sqLiteHelperFetchById.fetchById();
-
         if(jsonObject != null){
             Toast.makeText(this, ""+jsonObject.toString(), Toast.LENGTH_SHORT).show();
+        }*/
+
+        //FETCH TABLE DATA USING KEY VALUE(STRING)
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","name","SANDIP");
+        JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
+        if(jsonArrayData != null){
+            Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
+        }*/
+
+        //FETCH TABLE DATA USING KEY VALUE(INTEGER)
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722101);
+        JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
+        if(jsonArrayData != null){
+            Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
 

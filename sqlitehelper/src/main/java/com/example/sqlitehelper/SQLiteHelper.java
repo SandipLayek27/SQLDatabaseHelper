@@ -21,6 +21,9 @@ public class SQLiteHelper {
     private SQLiteDatabase db;
     JSONArray jsonArray = null;
     int id = 0;
+    String key ="";
+    String value = "";
+    int intVal = 0;
 
 
     //CREATE DATABASE, TABLE AND INSERT DATA CASE
@@ -43,7 +46,22 @@ public class SQLiteHelper {
         this.dataBaseName = dataBaseName;
         this.tableName = tableName;
         this.id = id;
+    }
 
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, String key, String value){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.key = key;
+        this.value = value;
+    }
+
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, String key, int intVal){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.key = key;
+        this.intVal = intVal;
     }
 
 
@@ -53,14 +71,17 @@ public class SQLiteHelper {
             Toast.makeText(context, "Database Name Required", Toast.LENGTH_SHORT).show();
             return false;
         }
+
         if(tableName.equalsIgnoreCase("")){
             Toast.makeText(context, "Table Name Required", Toast.LENGTH_SHORT).show();
             return false;
         }
+
         if(jsonArray.length() <= 0){
             Toast.makeText(context, "Data Must be Required", Toast.LENGTH_SHORT).show();
             return false;
         }
+
         try{
             if(createDatabase()){
                 if(createTable()){
@@ -95,6 +116,7 @@ public class SQLiteHelper {
             c = db.rawQuery(SELECT_SQL, null);
             int dataCount = c.getCount();
             if(dataCount < 1){
+                Toast.makeText(context, "NO DATA FOUND", Toast.LENGTH_SHORT).show();
                 return null;
             }
             int columnCount = c.getColumnCount();
@@ -139,6 +161,10 @@ public class SQLiteHelper {
 
 
     public JSONObject fetchById(){
+        if(id == 0){
+            Toast.makeText(context, "ID REQUIRED", Toast.LENGTH_SHORT).show();
+            return null;
+        }
         JSONObject jsonObject = new JSONObject();
         Cursor c;
         try{
@@ -147,6 +173,7 @@ public class SQLiteHelper {
             c = db.rawQuery(SELECT_SQL, null);
             int dataCount = c.getCount();
             if(dataCount < 1){
+                Toast.makeText(context, "NO DATA FOUND", Toast.LENGTH_SHORT).show();
                 return null;
             }
             int columnCount = c.getColumnCount();
@@ -183,6 +210,78 @@ public class SQLiteHelper {
             return null;
         }
     }
+
+    public JSONArray fetchByKeyValue(){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        Cursor c;
+        String SELECT_SQL = "";
+        if(key.equalsIgnoreCase("")){
+            Toast.makeText(context, "KEY PART REQUIRED", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        if(value.equalsIgnoreCase("") && intVal == 0){
+            Toast.makeText(context, "PROPER PARAMETERS REQUIRED", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        if(!value.equalsIgnoreCase("")  && value instanceof String){
+            value = "'"+value+"'";
+            SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName+" WHERE "+key+" = "+value;
+        }else{
+            SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName+" WHERE "+key+" = "+intVal;
+        }
+
+        try{
+            createDatabase();
+            c = db.rawQuery(SELECT_SQL, null);
+            int dataCount = c.getCount();
+            if(dataCount < 1){
+                Toast.makeText(context, "NO DATA FOUND", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+            int columnCount = c.getColumnCount();
+            if(c.moveToFirst()){
+                while(!c.isAfterLast()){
+                    jsonObject = new JSONObject();
+                    for(int i =0; i<columnCount; i++){
+                        try{
+                            switch (c.getType(i))  {
+                                case Cursor.FIELD_TYPE_FLOAT:
+                                    jsonObject.put(c.getColumnName(i),c.getFloat(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_INTEGER:
+                                    jsonObject.put(c.getColumnName(i),c.getInt(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_STRING:
+                                    jsonObject.put(c.getColumnName(i),c.getString(i));
+                                    break;
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                    jsonArray.put(jsonObject);
+                    c.moveToNext();
+                }
+                c.close();
+                if(jsonArray.length()>0){
+                    return jsonArray;
+                }else{
+                    return null;
+                }
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
 
     //START METHODS SQLLITE DATABASE HANDLING
