@@ -20,14 +20,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //FETCH DAMMY DATA
-        JSONArray jsonArray = fetchDammyData();
+        //JSONArray jsonArray = fetchDammyData();
         //CREATE FULL STRUCTURED TABLE
-        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+        /*SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
         if(sqLiteHelperTableData.createFullStructuredTable()){
             Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
         /*//FETCH TABLE DATA
@@ -52,18 +52,13 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //FETCH TABLE DATA USING KEY VALUE(INTEGER)
-        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722101);
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722101);
         JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
         if(jsonArrayData != null){
             Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
     }
-
-
-
-
-
 
 
     public JSONArray fetchDammyData(){
