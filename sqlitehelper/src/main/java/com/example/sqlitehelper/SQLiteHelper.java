@@ -19,8 +19,8 @@ public class SQLiteHelper {
     String tableName="";
     String dataBaseName="";
     private SQLiteDatabase db;
-    HashMap<String,String>hashMapData = null;
     JSONArray jsonArray = null;
+    int id = 0;
 
 
     //CREATE DATABASE, TABLE AND INSERT DATA CASE
@@ -36,6 +36,14 @@ public class SQLiteHelper {
         this.context = context;
         this.dataBaseName = dataBaseName;
         this.tableName = tableName;
+    }
+
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, int id){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.id = id;
+
     }
 
 
@@ -85,6 +93,10 @@ public class SQLiteHelper {
             createDatabase();
             String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName;
             c = db.rawQuery(SELECT_SQL, null);
+            int dataCount = c.getCount();
+            if(dataCount < 1){
+                return null;
+            }
             int columnCount = c.getColumnCount();
             if(c.moveToFirst()){
                 while(!c.isAfterLast()){
@@ -113,6 +125,53 @@ public class SQLiteHelper {
                 c.close();
                 if(jsonArray.length()>0){
                     return jsonArray;
+                }else{
+                    return null;
+                }
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public JSONObject fetchById(){
+        JSONObject jsonObject = new JSONObject();
+        Cursor c;
+        try{
+            createDatabase();
+            String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName+" WHERE id="+id;
+            c = db.rawQuery(SELECT_SQL, null);
+            int dataCount = c.getCount();
+            if(dataCount < 1){
+                return null;
+            }
+            int columnCount = c.getColumnCount();
+            if(c.moveToFirst()){
+                    for(int i =0; i<columnCount; i++){
+                        try{
+                            switch (c.getType(i))  {
+                                case Cursor.FIELD_TYPE_FLOAT:
+                                    jsonObject.put(c.getColumnName(i),c.getFloat(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_INTEGER:
+                                    jsonObject.put(c.getColumnName(i),c.getInt(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_STRING:
+                                    jsonObject.put(c.getColumnName(i),c.getString(i));
+                                    break;
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                    c.close();
+                if(jsonObject.length()>0 || jsonObject != null){
+                    return jsonObject;
                 }else{
                     return null;
                 }
