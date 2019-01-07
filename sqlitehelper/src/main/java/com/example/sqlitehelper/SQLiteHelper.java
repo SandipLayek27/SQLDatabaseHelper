@@ -81,40 +81,48 @@ public class SQLiteHelper {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         Cursor c;
-        createDatabase();
-        String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName;
-        c = db.rawQuery(SELECT_SQL, null);
-        int columnCount = c.getColumnCount();
-        if(c.moveToFirst()){
-            while(!c.isAfterLast()){
-                jsonObject = new JSONObject();
-                for(int i =0; i<columnCount; i++){
-                    try{
-                        switch (c.getType(i))  {
-                            case Cursor.FIELD_TYPE_FLOAT:
-                                jsonObject.put(c.getColumnName(i),c.getFloat(i));
-                                break;
-                            case Cursor.FIELD_TYPE_INTEGER:
-                                jsonObject.put(c.getColumnName(i),c.getInt(i));
-                                break;
-                            case Cursor.FIELD_TYPE_STRING:
-                                jsonObject.put(c.getColumnName(i),c.getString(i));
-                                break;
+        try{
+            createDatabase();
+            String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName;
+            c = db.rawQuery(SELECT_SQL, null);
+            int columnCount = c.getColumnCount();
+            if(c.moveToFirst()){
+                while(!c.isAfterLast()){
+                    jsonObject = new JSONObject();
+                    for(int i =0; i<columnCount; i++){
+                        try{
+                            switch (c.getType(i))  {
+                                case Cursor.FIELD_TYPE_FLOAT:
+                                    jsonObject.put(c.getColumnName(i),c.getFloat(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_INTEGER:
+                                    jsonObject.put(c.getColumnName(i),c.getInt(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_STRING:
+                                    jsonObject.put(c.getColumnName(i),c.getString(i));
+                                    break;
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            return null;
                         }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        return null;
                     }
+                    jsonArray.put(jsonObject);
+                    c.moveToNext();
                 }
-                //int i =0;
-                jsonArray.put(jsonObject);
-                c.moveToNext();
+                c.close();
+                if(jsonArray.length()>0){
+                    return jsonArray;
+                }else{
+                    return null;
+                }
+            }else {
+                return null;
             }
-            c.close();
-        }else {
+        }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
-        return jsonArray;
     }
 
 

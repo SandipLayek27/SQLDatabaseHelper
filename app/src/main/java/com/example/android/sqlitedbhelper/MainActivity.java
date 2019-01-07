@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
         //FETCH TABLE DATA
         SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
-
+        if(jsonArrayData != null){
+            Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
