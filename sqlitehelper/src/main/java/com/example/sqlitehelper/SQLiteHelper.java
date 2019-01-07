@@ -1,6 +1,8 @@
 package com.example.sqlitehelper;
 
+import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
@@ -26,6 +28,13 @@ public class SQLiteHelper {
         this.context = context;
         this.dataBaseName = dataBaseName;
         this.jsonArray = jsonArray;
+        this.tableName = tableName;
+    }
+
+    //FETCH ALL DATA FROM DATABASE
+    public SQLiteHelper(Context context,String dataBaseName, String tableName){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
         this.tableName = tableName;
     }
 
@@ -66,6 +75,46 @@ public class SQLiteHelper {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public JSONArray fetchAll(){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        Cursor c;
+        createDatabase();
+        String SELECT_SQL = "SELECT * FROM master";
+        c = db.rawQuery(SELECT_SQL, null);
+        int columnCount = c.getColumnCount();
+        if(c.moveToFirst()){
+            while(!c.isAfterLast()){
+                jsonObject = new JSONObject();
+                for(int i =0; i<columnCount; i++){
+                    try{
+                        switch (c.getType(i))  {
+                            case Cursor.FIELD_TYPE_FLOAT:
+                                jsonObject.put(c.getColumnName(i),c.getFloat(i));
+                                break;
+                            case Cursor.FIELD_TYPE_INTEGER:
+                                jsonObject.put(c.getColumnName(i),c.getInt(i));
+                                break;
+                            case Cursor.FIELD_TYPE_STRING:
+                                jsonObject.put(c.getColumnName(i),c.getString(i));
+                                break;
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+                //int i =0;
+                jsonArray.put(jsonObject);
+                c.moveToNext();
+            }
+            c.close();
+        }else {
+            return null;
+        }
+        return jsonArray;
     }
 
 
