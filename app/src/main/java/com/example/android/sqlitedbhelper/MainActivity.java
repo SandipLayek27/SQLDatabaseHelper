@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         //FETCH TABLE DATA
         SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
+
     }
 
 

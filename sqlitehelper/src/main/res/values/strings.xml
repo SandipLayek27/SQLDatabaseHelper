@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SQLiteHelper</string>
     <string name="semicolon">;</string>
+    <string name="star">*</string>
 </resources>

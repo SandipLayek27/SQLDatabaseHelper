@@ -82,7 +82,7 @@ public class SQLiteHelper {
         JSONObject jsonObject = new JSONObject();
         Cursor c;
         createDatabase();
-        String SELECT_SQL = "SELECT * FROM master";
+        String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName;
         c = db.rawQuery(SELECT_SQL, null);
         int columnCount = c.getColumnCount();
         if(c.moveToFirst()){
