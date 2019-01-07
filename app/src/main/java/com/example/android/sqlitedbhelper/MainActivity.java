@@ -18,8 +18,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //FETCH DAMMY DATA
+        JSONArray jsonArray = fetchDammyData();
+
         //CREATE FULL STRUCTURED TABLE
-        /*JSONArray jsonArray = new JSONArray();
+        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+        if(sqLiteHelperTableData.createFullStructuredTable()){
+            Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+        }
+
+        //FETCH TABLE DATA
+        SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+        JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
+    }
+
+
+
+
+
+
+
+    public JSONArray fetchDammyData(){
+        JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("name","SANDIP");
@@ -44,20 +67,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
-        if(sqLiteHelperTableData.createFullStructuredTable()){
-            Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
-        }*/
-
-        //FETCH TABLE DATA
-        SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
-        JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
-        Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
-
-
-
-
+        return jsonArray;
     }
 }
