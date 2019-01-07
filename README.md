@@ -30,7 +30,7 @@ dependencies {
 1. JSONArray to LOCAL DATABASE Storage [THIS LIBRARY CAN AUTOMATICALLY CREATE DATABASE, CREATE TABLE AND INSERT DATA SUCCESSFULLY].
 2. Fetch all  from Local Database (JSONArray Formated).
 3. Fetch data from Database using Id (JSONObject Formated).
-4. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).
+4. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).(JSONArray Formated)
 
 # ★ Uses of above Features
 * 1. JSONArray to LOCAL DATABASE Storage.
