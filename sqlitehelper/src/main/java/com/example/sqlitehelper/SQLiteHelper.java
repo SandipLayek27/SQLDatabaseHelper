@@ -133,6 +133,47 @@ public class SQLiteHelper {
         }
     }
 
+    public boolean insert(){
+
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "Database Name Required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "Table Name Required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(jsonArray.length() <= 0){
+            Toast.makeText(context, "Data Must be Required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        try{
+            if(createOrOpenDatabase()){
+                if(createTable()){
+                    if(insertData()){
+                        Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }else{
+                        Toast.makeText(context, "DATA INSERT FAILURE", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                }else {
+                    Toast.makeText(context, "FAILED TO CREATE TABLE", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }else{
+                Toast.makeText(context, "DATABASE NOT CREATED", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public JSONArray fetchAll(){
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();

@@ -33,6 +33,18 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        //FETCH DUMMY DATA
+        JSONArray jsonArray = fetchDummyData();
+
+        //CREATE FULL STRUCTURED TABLE
+        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+        if(sqLiteHelperTableData.insert()){
+            Toast.makeText(this, "SUCCESSFULLY INSERTED", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+        }
+
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //FETCH TABLE DATA
         /*SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
