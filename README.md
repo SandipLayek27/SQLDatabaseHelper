@@ -22,7 +22,7 @@ AND
 
 ```sh
 dependencies {
-	implementation 'com.github.SandipLayek27:SQLDatabaseHelper:1.1'
+	implementation 'com.github.SandipLayek27:SQLDatabaseHelper:1.2'
 }
 ```
 
