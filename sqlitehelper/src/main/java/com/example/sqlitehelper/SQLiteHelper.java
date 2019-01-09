@@ -1,7 +1,9 @@
 package com.example.sqlitehelper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
@@ -403,7 +405,63 @@ public class SQLiteHelper {
     }
 
 
+    public boolean deleteDataById(){
+        if(id < 1){
+            Toast.makeText(context, "ENTER VALID ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "DATABASE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        try{
+            createDatabase();
+            String data = "DELETE FROM "+tableName;
+            data = data +" WHERE id = "+id;
+            db.execSQL(data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    public boolean deleteDataByKeyValue(){
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "DATABASE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(key.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(value.equalsIgnoreCase("") && intVal == 0){
+            Toast.makeText(context, "PROPER PARAMETERS REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        try{
+            createDatabase();
+            String data = "DELETE FROM "+tableName;
+            if(!value.equalsIgnoreCase("")  && value instanceof String){
+                data = data+ " WHERE "+key+" = "+"'"+value+"'";
+            }else{
+                data = data+" WHERE "+key+" = "+intVal;
+            }
+            db.execSQL(data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     //START METHODS SQLLITE DATABASE HANDLING
     public boolean createDatabase(){

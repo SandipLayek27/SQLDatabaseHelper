@@ -87,6 +87,30 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
         }*/
 
+        //DELETE DATA FROM DATABASE USING ID
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+        if(sqLiteHelperFetchByKeyValue.deleteDataById()){
+            Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+        //DELETE DATA FROM DATABASE USING KEY VALUE MATCHING
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","address","DIGHA");
+        if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
+            Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722121);
+        if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
+            Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+
     }
 
 
