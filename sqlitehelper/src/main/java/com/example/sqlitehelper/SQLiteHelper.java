@@ -334,7 +334,7 @@ public class SQLiteHelper {
             while (iter.hasNext()) {
                 keypartData = iter.next();
                 Object objDataVal = jsonObject.get(keypartData);
-                if(objDataVal instanceof Integer || objDataVal instanceof Long ||objDataVal instanceof Boolean || objDataVal instanceof Float){
+                if(objDataVal instanceof Integer || objDataVal instanceof Long || objDataVal instanceof Boolean || objDataVal instanceof Float){
                     data = data + keypartData+" = "+jsonObject.getString(keypartData) +",";
                 }else{
                     data = data + keypartData+" = "+"'"+jsonObject.getString(keypartData)+"'" +",";

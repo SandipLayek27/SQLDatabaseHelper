@@ -20,18 +20,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //FETCH DUMMY DATA
         //JSONArray jsonArray = fetchDummyData();
 
         //CREATE FULL STRUCTURED TABLE
-        /*SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+       /* SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
         if(sqLiteHelperTableData.createFullStructuredTable()){
             Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
         }*/
 
-
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //FETCH TABLE DATA
         /*SQLiteHelper sqLiteHelperFetch = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         JSONArray jsonArrayData = sqLiteHelperFetch.fetchAll();
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //FETCH TABLE DATA USING KEY VALUE(STRING)
-        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","name","SANDIP");
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","address","KOLKATA");
         JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
         if(jsonArrayData != null){
             Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         if(jsonArrayData != null){
             Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
         }*/
-
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //UPDATE TABLE DATA USING ID(INTEGER)
         /*JSONObject jsonObject = formattedUpdatedData();
         SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,1);
@@ -69,6 +70,16 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
         }*/
+
+        //UPDATE TABLE DATA USING ID. VARIOUS DATA TYPE PASSING
+        /*JSONObject jsonObject = formattedUpdatedDataVeriousType();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,1);
+        if(sqLiteHelperFetchByKeyValue.updateDataById()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
 
         //UPDATE TABLE DATA USING KEY VALUE
         /*JSONObject jsonObject = formattedUpdatedData();
@@ -87,6 +98,23 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
         }*/
 
+        //UPDATE TABLE DATA USING KEY VALUE [VARIOUS DATA TYPE PASSING]
+        /*JSONObject jsonObject = formattedUpdatedDataVeriousType();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"pincode",722121);
+        if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+        /*JSONObject jsonObject = formattedUpdatedDataVeriousType();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"mobile","1234567890");
+        if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //DELETE DATA FROM DATABASE USING ID
         /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
         if(sqLiteHelperFetchByKeyValue.deleteDataById()){
@@ -96,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //DELETE DATA FROM DATABASE USING KEY VALUE MATCHING
-        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","address","DIGHA");
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","name","ARUNAVA");
         if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
             Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
         }else{
@@ -109,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
         }*/
-
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //DROP TABLE FROM DATABASE
         /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         if(sqLiteHelperFetchByKeyValue.dropTable()){
@@ -129,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("address","BANKURA");
             jsonObject.put("pincode",722101);
             jsonObject.put("mobile","8927281743");
+            jsonObject.put("age",11);
             jsonArray.put(jsonObject);
 
             jsonObject = new JSONObject();
@@ -136,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("address","KOLKATA");
             jsonObject.put("pincode",722121);
             jsonObject.put("mobile","1234567890");
+            jsonObject.put("age",10);
             jsonArray.put(jsonObject);
 
             jsonObject = new JSONObject();
@@ -143,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("address","KOLKATA");
             jsonObject.put("pincode",722121);
             jsonObject.put("mobile","9876543210");
+            jsonObject.put("age",5);
             jsonArray.put(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -154,7 +185,18 @@ public class MainActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("address","DIGHA");
-            jsonObject.put("name","RAMU");
+            jsonObject.put("name","NIRAJ");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public JSONObject formattedUpdatedDataVeriousType(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("address","DIGHA");
+            jsonObject.put("age",30);
         } catch (JSONException e) {
             e.printStackTrace();
         }
