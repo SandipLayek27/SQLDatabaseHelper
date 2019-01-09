@@ -113,7 +113,7 @@ public class SQLiteHelper {
         }
 
         try{
-            if(createDatabase()){
+            if(createOrOpenDatabase()){
                 if(createTable()){
                     if(insertData()){
                         Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
@@ -141,7 +141,7 @@ public class SQLiteHelper {
         JSONObject jsonObject = new JSONObject();
         Cursor c;
         try{
-            createDatabase();
+            createOrOpenDatabase();
             String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName;
             c = db.rawQuery(SELECT_SQL, null);
             int dataCount = c.getCount();
@@ -198,7 +198,7 @@ public class SQLiteHelper {
         JSONObject jsonObject = new JSONObject();
         Cursor c;
         try{
-            createDatabase();
+            createOrOpenDatabase();
             String SELECT_SQL = "SELECT "+context.getResources().getString(R.string.star)+" FROM "+tableName+" WHERE id="+id;
             c = db.rawQuery(SELECT_SQL, null);
             int dataCount = c.getCount();
@@ -264,7 +264,7 @@ public class SQLiteHelper {
         }
 
         try{
-            createDatabase();
+            createOrOpenDatabase();
             c = db.rawQuery(SELECT_SQL, null);
             int dataCount = c.getCount();
             if(dataCount < 1){
@@ -331,7 +331,7 @@ public class SQLiteHelper {
         String data = "UPDATE "+tableName+" SET ";
 
         try{
-            createDatabase();
+            createOrOpenDatabase();
             Iterator<String> iter = jsonObject.keys();
             String keypartData = "";
             while (iter.hasNext()) {
@@ -378,7 +378,7 @@ public class SQLiteHelper {
         String data = "UPDATE "+tableName+" SET ";
 
         try{
-            createDatabase();
+            createOrOpenDatabase();
             Iterator<String> iter = jsonObject.keys();
             String keypartData = "";
             while (iter.hasNext()) {
@@ -419,7 +419,7 @@ public class SQLiteHelper {
             return false;
         }
         try{
-            createDatabase();
+            createOrOpenDatabase();
             String data = "DELETE FROM "+tableName;
             data = data +" WHERE id = "+id;
             db.execSQL(data);
@@ -448,7 +448,7 @@ public class SQLiteHelper {
             return false;
         }
         try{
-            createDatabase();
+            createOrOpenDatabase();
             String data = "DELETE FROM "+tableName;
             if(!value.equalsIgnoreCase("")  && value instanceof String){
                 data = data+ " WHERE "+key+" = "+"'"+value+"'";
@@ -463,8 +463,28 @@ public class SQLiteHelper {
         }
     }
 
+    public boolean dropTable(){
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "DATABASE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        try {
+            createOrOpenDatabase();
+            String data = context.getResources().getString(R.string.drop)+" "+tableName;
+            db.execSQL(data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     //START METHODS SQLLITE DATABASE HANDLING
-    public boolean createDatabase(){
+    public boolean createOrOpenDatabase(){
         try{
             if(dataBaseName.equalsIgnoreCase("")){
                 Toast.makeText(context, "Database Name Required", Toast.LENGTH_SHORT).show();

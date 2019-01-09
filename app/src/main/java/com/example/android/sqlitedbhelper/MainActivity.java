@@ -110,7 +110,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
         }*/
 
-
+        //DROP TABLE FROM DATABASE
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+        if(sqLiteHelperFetchByKeyValue.dropTable()){
+            Toast.makeText(this, "Delete Table Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Delete Table Failed", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
