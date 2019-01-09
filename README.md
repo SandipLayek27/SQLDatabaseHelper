@@ -32,15 +32,17 @@ dependencies {
 3. Fetch data from Database using Id (JSONObject Formated).
 4. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).(JSONArray Formated)
 5. Update data using id.(Integer)
-6. Update data using key & value(String and Integer both case).
-7. Delete data from table using Id.
-8. Delete data from table using key & value(String and Integer both case).
-9. Drop table.
+6. Update data using id. [VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
+7. Update data using key & value(String and Integer both case).
+8. Update data using key & value(String and Integer both case).
+[VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
+9. Delete data from table using Id.
+10. Delete data from table using key & value(String and Integer both case).
+11. Drop table.
 
 
 ★ HELPER FORMAT FOR DUMMY DATA.
 ```
-//INSERT DATA CASE JSON FORMAT
 public JSONArray fetchDummyData(){
 JSONArray jsonArray = new JSONArray();
 JSONObject jsonObject = new JSONObject();
@@ -69,13 +71,23 @@ try {
 }
 return jsonArray;
 }
-
-//UPDATE DATA CASE JSON FORMAT
+*******************************************************
 public JSONObject formattedUpdatedData(){
 JSONObject jsonObject = new JSONObject();
 try {
-    jsonObject.put("address","DIGHA");
-    jsonObject.put("name","RAMU");
+    jsonObject.put("address","BANKURA");
+    jsonObject.put("name","SANDIP");
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+return jsonObject;
+}
+*******************************************************
+public JSONObject formattedUpdatedDataVeriousType(){
+JSONObject jsonObject = new JSONObject();
+try {
+    jsonObject.put("address","BANKURA");
+    jsonObject.put("pincode",712345);
 } catch (JSONException e) {
     e.printStackTrace();
 }
@@ -141,7 +153,17 @@ if(sqLiteHelperFetchByKeyValue.updateDataById()){
     Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
 }
 ```
-* 6 Update data using key & value(String and Integer both case).
+* 6 Update data using id. [VARIOUS TYPE DATA PASSING] 
+```
+JSONObject jsonObject = formattedUpdatedDataVeriousType();
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,1);
+if(sqLiteHelperFetchByKeyValue.updateDataById()){
+    Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+}
+```
+* 7 Update data using key & value(String and Integer both case).
 ```
 JSONObject jsonObject = formattedUpdatedData();
 SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"pincode",722101);
@@ -159,7 +181,27 @@ if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
     Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
 }
 ```
-* Delete data from table using Id.
+
+* 8 Update data using key & value(String and Integer both case)[VARIOUS TYPE DATA PASSING] .
+```
+JSONObject jsonObject = formattedUpdatedDataVeriousType();
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"pincode",722121);
+if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+    Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+}
+
+JSONObject jsonObject = formattedUpdatedDataVeriousType();
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"mobile","1234567890");
+if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+    Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+}
+```
+
+* 9 Delete data from table using Id.
 ```
 SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
 if(sqLiteHelperFetchByKeyValue.deleteDataById()){
@@ -168,7 +210,7 @@ if(sqLiteHelperFetchByKeyValue.deleteDataById()){
     Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
 }
 ```
-* Delete data from table using key & value matching(String and Integer both case).
+* 10 Delete data from table using key & value matching(String and Integer both case).
 ```
 SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","address","DIGHA");
 if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
@@ -184,7 +226,7 @@ if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
     Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
 }
 ```
-* Drop Table
+* 11 Drop Table
 ```
 SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
 if(sqLiteHelperFetchByKeyValue.dropTable()){
