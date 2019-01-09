@@ -2,6 +2,7 @@ package com.example.android.sqlitedbhelper;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sqlitehelper.SQLiteHelper;
@@ -19,15 +20,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //FETCH DAMMY DATA
-        //JSONArray jsonArray = fetchDammyData();
+        //FETCH DUMMY DATA
+        JSONArray jsonArray = fetchDammyData();
+
         //CREATE FULL STRUCTURED TABLE
-        /*SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
         if(sqLiteHelperTableData.createFullStructuredTable()){
             Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
 
         /*//FETCH TABLE DATA
@@ -51,12 +53,41 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
         }*/
 
+
         //FETCH TABLE DATA USING KEY VALUE(INTEGER)
         /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722101);
         JSONArray jsonArrayData = sqLiteHelperFetchByKeyValue.fetchByKeyValue();
         if(jsonArrayData != null){
             Toast.makeText(this, ""+jsonArrayData.toString(), Toast.LENGTH_SHORT).show();
         }*/
+
+        //UPDATE TABLE DATA USING ID(INTEGER)
+        /*JSONObject jsonObject = formattedUpdatedData();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,1);
+        if(sqLiteHelperFetchByKeyValue.updateDataById()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+        //UPDATE TABLE DATA USING KEY VALUE
+        /*JSONObject jsonObject = formattedUpdatedData();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"pincode",722121);
+        if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+        /*JSONObject jsonObject = formattedUpdatedData();
+        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"mobile","8927281743");
+        if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
+            Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+        }*/
+
+
 
     }
 
@@ -89,4 +120,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return jsonArray;
     }
+
+    public JSONObject formattedUpdatedData(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("address","KOLKATA");
+            jsonObject.put("name","LAYEK");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+
 }

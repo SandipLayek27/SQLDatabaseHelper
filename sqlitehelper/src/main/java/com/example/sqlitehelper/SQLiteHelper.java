@@ -24,6 +24,7 @@ public class SQLiteHelper {
     String key ="";
     String value = "";
     int intVal = 0;
+    JSONObject jsonObject = null;
 
 
     //CREATE DATABASE, TABLE AND INSERT DATA CASE
@@ -63,6 +64,33 @@ public class SQLiteHelper {
         this.key = key;
         this.intVal = intVal;
     }
+
+
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, int id){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.jsonObject = jsonObject;
+        this.id = id;
+    }
+
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, String key, String value){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.jsonObject = jsonObject;
+        this.key = key;
+        this.value = value;
+    }
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, String key, int intVal){
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.tableName = tableName;
+        this.jsonObject = jsonObject;
+        this.key = key;
+        this.intVal = intVal;
+    }
+
 
 
     public boolean createFullStructuredTable(){
@@ -278,6 +306,99 @@ public class SQLiteHelper {
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean updateDataById(){
+        if(id < 1){
+            Toast.makeText(context, "ENTER VALID ID", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "DATABASE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(jsonObject == null || jsonObject.length() < 1){
+            Toast.makeText(context, "ENTER VALID UPDATED DATA", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String data = "UPDATE "+tableName+" SET ";
+
+        try{
+            createDatabase();
+            Iterator<String> iter = jsonObject.keys();
+            String keypartData = "";
+            while (iter.hasNext()) {
+                keypartData = iter.next();
+                Object objDataVal = jsonObject.get(keypartData);
+                if(objDataVal instanceof Integer || objDataVal instanceof Long ||objDataVal instanceof Boolean || objDataVal instanceof Float){
+                    data = data + keypartData+" = "+jsonObject.getString(keypartData) +",";
+                }else{
+                    data = data + keypartData+" = "+"'"+jsonObject.getString(keypartData)+"'" +",";
+                }
+            }
+            data = HelperClass.formattedQuery(data);
+            data = data + " WHERE id = "+id;
+            db.execSQL(data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateDataByKey(){
+        if(key.equalsIgnoreCase("")){
+            Toast.makeText(context, "KEY PART REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(value.equalsIgnoreCase("") && intVal == 0){
+            Toast.makeText(context, "PROPER PARAMETERS REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(tableName.equalsIgnoreCase("")){
+            Toast.makeText(context, "TABLE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(dataBaseName.equalsIgnoreCase("")){
+            Toast.makeText(context, "DATABASE NAME REQUIRED", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(jsonObject == null || jsonObject.length() < 1){
+            Toast.makeText(context, "ENTER VALID UPDATED DATA", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String data = "UPDATE "+tableName+" SET ";
+
+        try{
+            createDatabase();
+            Iterator<String> iter = jsonObject.keys();
+            String keypartData = "";
+            while (iter.hasNext()) {
+                keypartData = iter.next();
+                Object objDataVal = jsonObject.get(keypartData);
+                if(objDataVal instanceof Integer || objDataVal instanceof Long ||objDataVal instanceof Boolean || objDataVal instanceof Float){
+                    data = data + keypartData+" = "+jsonObject.getString(keypartData) +",";
+                }else{
+                    data = data + keypartData+" = "+"'"+jsonObject.getString(keypartData)+"'" +",";
+                }
+            }
+            data = HelperClass.formattedQuery(data);
+            if(!value.equalsIgnoreCase("")  && value instanceof String){
+                data = data+ " WHERE "+key+" = "+"'"+value+"'";
+            }else{
+                data = data+" WHERE "+key+" = "+intVal;
+            }
+            db.execSQL(data);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 
