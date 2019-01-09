@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //FETCH DUMMY DATA
-        //JSONArray jsonArray = fetchDammyData();
+        //JSONArray jsonArray = fetchDummyData();
 
         //CREATE FULL STRUCTURED TABLE
         /*SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
@@ -79,20 +79,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
         }*/
 
-        JSONObject jsonObject = formattedUpdatedData();
+        /*JSONObject jsonObject = formattedUpdatedData();
         SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonObject,"mobile","1234567890");
         if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
             Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
-        }
-
-
+        }*/
 
     }
 
 
-    public JSONArray fetchDammyData(){
+    public JSONArray fetchDummyData(){
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         try {
