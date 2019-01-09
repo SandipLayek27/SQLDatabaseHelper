@@ -1,4 +1,4 @@
-# SQLDatabaseHelper
+# SQLiteDatabaseHelper
 Databse Purpose Uses
 
 ## Developed
@@ -33,6 +33,8 @@ dependencies {
 4. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).(JSONArray Formated)
 5. Update data using id.(Integer)
 6. Update data using key & value(String and Integer both case).
+7. Delete data from table using Id.
+8. Delete data from table using key & value(String and Integer both case).
 
 
 ★ HELPER FORMAT FOR DUMMY DATA.
@@ -154,5 +156,30 @@ if(sqLiteHelperFetchByKeyValue.updateDataByKey()){
     Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
 }else{
     Toast.makeText(this, "Updating Failed", Toast.LENGTH_SHORT).show();
+}
+```
+* Delete data from table using Id.
+```
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+if(sqLiteHelperFetchByKeyValue.deleteDataById()){
+    Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+}
+```
+* Delete data from table using key & value matching(String and Integer both case).
+```
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","address","DIGHA");
+if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
+    Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+}
+
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master","pincode",722121);
+if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
+    Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
 }
 ```
