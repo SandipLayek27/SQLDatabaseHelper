@@ -28,8 +28,6 @@ public class SQLiteHelper {
     int intVal = 0;
     JSONObject jsonObject = null;
 
-
-    //CREATE DATABASE, TABLE AND INSERT DATA CASE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONArray jsonArray) {
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -37,7 +35,6 @@ public class SQLiteHelper {
         this.tableName = tableName;
     }
 
-    //FETCH ALL DATA FROM DATABASE
     public SQLiteHelper(Context context,String dataBaseName, String tableName){
         this.context = context;
         this.dataBaseName = dataBaseName;
