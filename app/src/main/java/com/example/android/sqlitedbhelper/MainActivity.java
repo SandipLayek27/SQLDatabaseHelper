@@ -111,12 +111,12 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //DROP TABLE FROM DATABASE
-        SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+        /*SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
         if(sqLiteHelperFetchByKeyValue.dropTable()){
             Toast.makeText(this, "Delete Table Successfully", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Delete Table Failed", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
 
