@@ -35,6 +35,7 @@ dependencies {
 6. Update data using key & value(String and Integer both case).
 7. Delete data from table using Id.
 8. Delete data from table using key & value(String and Integer both case).
+9. Drop table.
 
 
 ★ HELPER FORMAT FOR DUMMY DATA.
@@ -181,5 +182,14 @@ if(sqLiteHelperFetchByKeyValue.deleteDataByKeyValue()){
     Toast.makeText(this, "Delete Data Successfully", Toast.LENGTH_SHORT).show();
 }else{
     Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+}
+```
+* Drop Table
+```
+SQLiteHelper sqLiteHelperFetchByKeyValue = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+if(sqLiteHelperFetchByKeyValue.dropTable()){
+    Toast.makeText(this, "Delete Table Successfully", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "Delete Table Failed", Toast.LENGTH_SHORT).show();
 }
 ```
