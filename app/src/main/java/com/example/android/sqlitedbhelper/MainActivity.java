@@ -28,19 +28,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    Button captureBtn,saveBtn;
-    ImageView iv;
-    private static final int CAMERA_REQUEST = 1888;
-    String selectedPath="";
-    byte[] blobFormatedData;
+
+    /* FOR IMAGE FILE UPLOAD TO DATABASE CASE START */
+    //Button captureBtn,saveBtn;
+    //ImageView iv;
+    //private static final int CAMERA_REQUEST = 1888;
+    //String selectedPath="";
+    //byte[] blobFormatedData;
+    /* FOR IMAGE FILE UPLOAD TO DATABASE CASE END */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        // IMAGE SAVE SECTION STARTS HERE
+        // FIND IDS FOR IMAGE VIEW AND CAPTURE AND SAVE BUTTON
+        /*
         captureBtn = findViewById(R.id.captureBtn);
         saveBtn = findViewById(R.id.saveBtn);
         iv = findViewById(R.id.iv);
+
+        // IMAGE CAPTURE CODE
         captureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,9 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
+        // INSERT DATA WITH IMAGE CODE
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // LOAD DATA WITH IMAGE
                 JSONArray jsonArray = fetchDummyDataWithFile();
 
                 SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
@@ -61,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        */
 
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //FETCH DUMMY DATA
@@ -203,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    /*
     public JSONArray fetchDummyData(){
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -317,4 +330,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return bos != null ? bos.toByteArray() : null;
     }
+    */
 }

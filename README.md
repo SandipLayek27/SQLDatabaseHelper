@@ -36,6 +36,7 @@ dependencies {
 7. Update data using id. [VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
 8. Update data using key & value(String and Integer both case).
 9. Update data using key & value(String and Integer both case).
+10. Insert data with image file.
 [VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
 10. Delete data from table using Id.
 11. Delete data from table using key & value(String and Integer both case).
@@ -72,6 +73,30 @@ try {
 }
 return jsonArray;
 }
+******************************************************
+// Dummy Data With File
+public JSONArray fetchDummyDataWithFile(){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name","SANDIP");
+            jsonObject.put("address","BANKURA");
+            jsonObject.put("pincode",722101);
+            jsonObject.put("mobile","8927281743");
+            jsonObject.put("age",11);
+            jsonObject.put("image",blobFormatedData);
+            /*
+                blobFormatedData is byte[] type. Which I get from 
+                imageInformation.getFileInByteArray(realPath);
+                USE "https://github.com/SandipLayek27/ImageDetailsLibs" Libs v1.2
+                You can get all image format and properties easily
+            */
+            jsonArray.put(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
 *******************************************************
 public JSONObject formattedUpdatedData(){
 JSONObject jsonObject = new JSONObject();
@@ -125,6 +150,7 @@ if(sqLiteHelperTableData.insert()){
 }
         
 ```
+
 
 * 3 Fetch all  from Local Database (JSONArray Formated).
 ```
@@ -249,4 +275,33 @@ if(sqLiteHelperFetchByKeyValue.dropTable()){
 }else{
     Toast.makeText(this, "Delete Table Failed", Toast.LENGTH_SHORT).show();
 }
+```
+
+* 13. Create Table With Data And Image File.
+```sh
+//FETCH JSONArray DUMMY DATA
+JSONArray jsonArray = fetchDummyDataWithFile();
+
+//CALL LIBRARY FUNCTION [PASS:- DATABASE NAME, TABLE NAME & JSONARRAY]
+SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+if(sqLiteHelperTableData.createFullStructuredTable()){
+  Toast.makeText(this, "SUCCESSFULLY CREATED", Toast.LENGTH_SHORT).show();   
+}else{
+  Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+}
+```
+
+* 14. Insert Data With Image File.
+```sh
+//FETCH JSONArray DUMMY DATA
+JSONArray jsonArray = fetchDummyDataWithFile();
+
+//CREATE FULL STRUCTURED TABLE
+SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",jsonArray);
+if(sqLiteHelperTableData.insert()){
+    Toast.makeText(this, "SUCCESSFULLY INSERTED", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+}
+        
 ```
