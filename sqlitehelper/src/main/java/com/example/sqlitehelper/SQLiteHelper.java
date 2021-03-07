@@ -1,17 +1,22 @@
 package com.example.sqlitehelper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -27,12 +32,21 @@ public class SQLiteHelper {
     String value = "";
     int intVal = 0;
     JSONObject jsonObject = null;
+    JSONArray fileData;
 
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONArray jsonArray) {
         this.context = context;
         this.dataBaseName = dataBaseName;
         this.jsonArray = jsonArray;
         this.tableName = tableName;
+    }
+
+    public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONArray jsonArray, JSONArray fileData) {
+        this.context = context;
+        this.dataBaseName = dataBaseName;
+        this.jsonArray = jsonArray;
+        this.tableName = tableName;
+        this.fileData = fileData;
     }
 
     public SQLiteHelper(Context context,String dataBaseName, String tableName){
@@ -538,7 +552,7 @@ public class SQLiteHelper {
 
     public boolean createTable(){
         String synOne = "CREATE TABLE IF NOT EXISTS "+tableName;
-        String synTwo = synOne+"(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,";
+        String synTwo = synOne+"(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,";
 
         JSONObject jsonObject = null;
         try {
@@ -556,11 +570,14 @@ public class SQLiteHelper {
                     synTwo = synTwo+HelperClass.fetchDataWithType(keyPart,"BOOLEAN");
                 }else if( objDataVal instanceof Float){
                     synTwo = synTwo+HelperClass.fetchDataWithType(keyPart,"FLOAT");
+                }else if( objDataVal instanceof byte[]){
+                    synTwo = synTwo+HelperClass.fetchDataWithType(keyPart,"BLOB");
                 }else{
                     synTwo = synTwo+HelperClass.fetchDataWithType(keyPart,"VARCHAR");
                 }
                 synTwo =synTwo +",";
             }
+
             synTwo = HelperClass.formattedQuery(synTwo)+");";
             try {
                 db.execSQL(synTwo);
@@ -577,6 +594,9 @@ public class SQLiteHelper {
 
     public boolean insertData(){
         try{
+            int fileCase = 0;
+            String fileFieldName = null;
+            byte[] fileData = new byte[0];
             if(dataBaseName.equalsIgnoreCase("")){
                 Toast.makeText(context, "Database Name Required", Toast.LENGTH_SHORT).show();
                 return false;
@@ -613,6 +633,11 @@ public class SQLiteHelper {
                         Object objDataVal = jsonObject1.get(keypartData);
                         if(objDataVal instanceof Integer || objDataVal instanceof Long ||objDataVal instanceof Boolean || objDataVal instanceof Float){
                             data = data + jsonObject1.getString(keypartData) +",";
+                        }else if(objDataVal instanceof byte[] ){
+                            fileFieldName = keypartData;
+                            fileData = (byte[]) jsonObject1.get(keypartData);
+                            fileCase = 1;
+                            data = data +"''" +",";
                         }else{
                             data = data +"'"+jsonObject1.getString(keypartData)+"'" +",";
                         }
@@ -626,6 +651,16 @@ public class SQLiteHelper {
 
                 finalQuery = query2+";";
                 db.execSQL(finalQuery);
+
+                // IF FILE DATA AVAILABLE
+                if(fileCase == 1){
+                    int id = getLastInsertedId(tableName);
+                    if(writeFile(id,fileFieldName,fileData,tableName)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
                 return true;
             }catch (Exception e){
                 e.printStackTrace();
@@ -634,6 +669,34 @@ public class SQLiteHelper {
         }catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public boolean writeFile(int id, String fieldName, byte[] image, String tableName) throws SQLiteException{
+        try{
+            ContentValues cv = new  ContentValues();
+            cv.put("id", id);
+            cv.put(fieldName, image);
+            db.update(tableName, cv, null, null);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getLastInsertedId(String tableName){
+        try{
+            int lastId = 0;
+            String query = "SELECT id FROM "+tableName+" ORDER BY id DESC limit 1";
+            Cursor c = db.rawQuery(query,null);
+            if (c != null && c.moveToFirst()) {
+                lastId = c.getInt(0); //The 0 is the column index, we only have 1 column, so the index is 0
+            }
+            return lastId;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
         }
     }
 }

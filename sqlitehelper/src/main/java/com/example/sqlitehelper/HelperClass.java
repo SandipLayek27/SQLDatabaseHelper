@@ -123,6 +123,10 @@ public class HelperClass {
                 dataTypeResponse = data+" LONGBLOB";
                 break;
 
+            case "BLOB":
+                dataTypeResponse = data+" BLOB";
+                break;
+
             case "ENUM":
                 dataTypeResponse = data+" ENUM";
                 break;
