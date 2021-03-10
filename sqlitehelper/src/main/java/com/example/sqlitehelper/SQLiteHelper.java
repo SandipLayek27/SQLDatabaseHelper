@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,8 +35,8 @@ public class SQLiteHelper {
     String value = "";
     int intVal = 0;
     JSONObject jsonObject = null;
-    JSONArray fileData;
 
+    // CREATE FULL STRUCTURED TABLE, INSERT TABLE, SAVE IMAGE WITH DATA, FETCH IMAGE USING id
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONArray jsonArray) {
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -41,20 +44,14 @@ public class SQLiteHelper {
         this.tableName = tableName;
     }
 
-    public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONArray jsonArray, JSONArray fileData) {
-        this.context = context;
-        this.dataBaseName = dataBaseName;
-        this.jsonArray = jsonArray;
-        this.tableName = tableName;
-        this.fileData = fileData;
-    }
-
+    // FOR FETCH ALL DATA FROM TABLE
     public SQLiteHelper(Context context,String dataBaseName, String tableName){
         this.context = context;
         this.dataBaseName = dataBaseName;
         this.tableName = tableName;
     }
 
+    // FOR FETCH,DELETE DATA USING ID FROM TABLE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, int id){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -62,6 +59,7 @@ public class SQLiteHelper {
         this.id = id;
     }
 
+    // FOR FETCH,DELETE DATA USING KEY AND VALUE(STRING) MATCHING FROM TABLE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, String key, String value){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -70,6 +68,7 @@ public class SQLiteHelper {
         this.value = value;
     }
 
+    // FOR FETCH,DELETE DATA USING KEY AND VALUE(INT) MATCHING FROM TABLE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, String key, int intVal){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -78,7 +77,7 @@ public class SQLiteHelper {
         this.intVal = intVal;
     }
 
-
+    // UPDATE TABLE USING ID
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, int id){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -87,6 +86,7 @@ public class SQLiteHelper {
         this.id = id;
     }
 
+    // UPDATE TABLE USING KEY AND VALUE(STRING) COMPARE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, String key, String value){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -95,6 +95,8 @@ public class SQLiteHelper {
         this.key = key;
         this.value = value;
     }
+
+    // UPDATE TABLE USING KEY AND VALUE(INT) COMPARE
     public SQLiteHelper(Context context,String dataBaseName, String tableName, JSONObject jsonObject, String key, int intVal){
         this.context = context;
         this.dataBaseName = dataBaseName;
@@ -217,6 +219,9 @@ public class SQLiteHelper {
                                 case Cursor.FIELD_TYPE_STRING:
                                     jsonObject.put(c.getColumnName(i),c.getString(i));
                                     break;
+                                case Cursor.FIELD_TYPE_BLOB:
+                                    jsonObject.put(c.getColumnName(i),c.getBlob(i));
+                                    break;
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -271,6 +276,9 @@ public class SQLiteHelper {
                                     break;
                                 case Cursor.FIELD_TYPE_STRING:
                                     jsonObject.put(c.getColumnName(i),c.getString(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_BLOB:
+                                    jsonObject.put(c.getColumnName(i),c.getBlob(i));
                                     break;
                             }
                         }catch (Exception e){
@@ -338,6 +346,9 @@ public class SQLiteHelper {
                                     break;
                                 case Cursor.FIELD_TYPE_STRING:
                                     jsonObject.put(c.getColumnName(i),c.getString(i));
+                                    break;
+                                case Cursor.FIELD_TYPE_BLOB:
+                                    jsonObject.put(c.getColumnName(i),c.getBlob(i));
                                     break;
                             }
                         }catch (Exception e){
@@ -655,7 +666,7 @@ public class SQLiteHelper {
                 // IF FILE DATA AVAILABLE
                 if(fileCase == 1){
                     int id = getLastInsertedId(tableName);
-                    if(writeFile(id,fileFieldName,fileData,tableName)){
+                    if(writeFile(id,fileFieldName,fileData)){
                         return true;
                     }else{
                         return false;
@@ -672,17 +683,42 @@ public class SQLiteHelper {
         }
     }
 
-    public boolean writeFile(int id, String fieldName, byte[] image, String tableName) throws SQLiteException{
+    public boolean writeFile(int id, String fieldName, byte[] image) throws SQLiteException{
         try{
             ContentValues cv = new  ContentValues();
-            cv.put("id", id);
             cv.put(fieldName, image);
-            db.update(tableName, cv, null, null);
+            db.update(tableName, cv, "id = ?", new String[]{String.valueOf(id)});
             return true;
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean updateFileUsingId(int id, String fieldName, byte[] image) throws SQLiteException{
+        try{
+            createOrOpenDatabase();
+            ContentValues cv = new  ContentValues();
+            cv.put(fieldName, image);
+            db.update(tableName, cv, "id = ?", new String[]{String.valueOf(id)});
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // GETTING IMAGE USING PRIMARY KEY
+    public Bitmap getImageUsingId(int id, String fieldName) {
+        createOrOpenDatabase();
+        Cursor cursor = db.query(tableName, new String[] { fieldName }, "id = ?",
+                new String[] { String.valueOf(id)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        byte[] image = cursor.getBlob(0);
+        Bitmap bmp= BitmapFactory.decodeByteArray(image, 0 , image.length);
+        return bmp;
     }
 
     public int getLastInsertedId(String tableName){

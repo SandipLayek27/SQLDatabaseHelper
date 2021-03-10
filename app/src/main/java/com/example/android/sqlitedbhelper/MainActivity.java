@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +31,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     /* FOR IMAGE FILE UPLOAD TO DATABASE CASE START */
-    //Button captureBtn,saveBtn;
-    //ImageView iv;
-    //private static final int CAMERA_REQUEST = 1888;
-    //String selectedPath="";
-    //byte[] blobFormatedData;
+//    Button captureBtn,saveBtn,updateBtn;
+//    ImageView iv;
+//    private static final int CAMERA_REQUEST = 1888;
+//    String selectedPath="";
+//    byte[] blobFormatedData;
     /* FOR IMAGE FILE UPLOAD TO DATABASE CASE END */
 
     @Override
@@ -42,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        /*
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // IMAGE SAVE SECTION STARTS HERE
         // FIND IDS FOR IMAGE VIEW AND CAPTURE AND SAVE BUTTON
-        /*
         captureBtn = findViewById(R.id.captureBtn);
         saveBtn = findViewById(R.id.saveBtn);
+        updateBtn = findViewById(R.id.updateBtn);
         iv = findViewById(R.id.iv);
 
         // IMAGE CAPTURE CODE
@@ -74,6 +75,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        // UPDATE IMAGE USING ID
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+                if(sqLiteHelperTableData.updateFileUsingId(1,"image",blobFormatedData)){
+                    Toast.makeText(MainActivity.this, "SUCCESSFULLY UPDATED", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // FETCH SINGLE ROW DATA WITH IMAGE AND ALSO PARSE IMAGE TO BITMAP AND SET IT TO IMAGE VIEW
+        SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+        JSONObject jsonObject1 = sqLiteHelperTableData.fetchById();
+        byte[] image = new byte[0];
+        try {
+            image = (byte[]) jsonObject1.get("image");
+            Bitmap bmp= BitmapFactory.decodeByteArray(image, 0 , image.length);
+            iv.setImageBitmap(bmp);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // GET IMAGE FROM DB AND SET TO IMAGE VIEW
+        SQLiteHelper sqLiteHelperTableData1 = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+        Bitmap bitmap = sqLiteHelperTableData1.getImageUsingId(2,"image");
+        iv.setImageBitmap(bitmap);
+        // IMAGE SAVE SECTION END HERE
         */
 
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -213,9 +244,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Delete Table Failed", Toast.LENGTH_SHORT).show();
         }*/
-
     }
-
     /*
     public JSONArray fetchDummyData(){
         JSONArray jsonArray = new JSONArray();
@@ -249,23 +278,6 @@ public class MainActivity extends AppCompatActivity {
         return jsonArray;
     }
 
-    public JSONArray fetchDummyDataWithFile(){
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name","SANDIP");
-            jsonObject.put("address","BANKURA");
-            jsonObject.put("pincode",722101);
-            jsonObject.put("mobile","8927281743");
-            jsonObject.put("age",11);
-            jsonObject.put("image",blobFormatedData);
-            jsonArray.put(jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray;
-    }
-
     public JSONObject formattedUpdatedData(){
         JSONObject jsonObject = new JSONObject();
         try {
@@ -287,6 +299,26 @@ public class MainActivity extends AppCompatActivity {
         }
         return jsonObject;
     }
+    */
+
+    /*
+    // IMAGE PURPOSE USES
+    public JSONArray fetchDummyDataWithFile(){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name","SANDIP");
+            jsonObject.put("address","BANKURA");
+            jsonObject.put("pincode",722101);
+            jsonObject.put("mobile","8927281743");
+            jsonObject.put("age",11);
+            jsonObject.put("image",blobFormatedData);
+            jsonArray.put(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
 
     // HOLD CAMERA CAPTURE DATA START
     @SuppressLint("MissingSuperCall")
@@ -297,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
             iv.setImageBitmap(photo);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "Title", null);
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "IMG_" + System.currentTimeMillis(), null);
             Uri uri = Uri.parse(path);
             if (getContentResolver() != null) {
                 Cursor cursor = getContentResolver().query(uri, null, null, null, null);

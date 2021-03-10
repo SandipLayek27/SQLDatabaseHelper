@@ -22,26 +22,29 @@ AND
 
 ```sh
 dependencies {
-	implementation 'com.github.SandipLayek27:SQLDatabaseHelper:1.4'
+	implementation 'com.github.SandipLayek27:SQLDatabaseHelper:1.6'
 }
 ```
 
 # ★ Features are
 1. JSONArray to LOCAL DATABASE Storage [THIS LIBRARY CAN AUTOMATICALLY CREATE DATABASE, CREATE TABLE AND INSERT DATA SUCCESSFULLY].
 2. Insert Data.
-3. Fetch all  from Local Database (JSONArray Formated).
-4. Fetch data from Database using Id (JSONObject Formated).
-5. Fetch data from Database using Key & Value Dynamic Serching Technology(String and Integer both case).(JSONArray Formated)
+3. Fetch all  from Local Database (JSONArray Formatted).
+4. Fetch data from Database using Id (JSONObject Formatted).
+5. Fetch data from Database using Key & Value Dynamic Searching Technology(String and Integer both case).(JSONArray Formatted)
 6. Update data using id.(Integer)
 7. Update data using id. [VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
 8. Update data using key & value(String and Integer both case).
 9. Update data using key & value(String and Integer both case).
-10. Insert data with image file.
 [VARIOUS TYPE DATA PASSING] i,e. Updated data should be Integer Type and String Type both.
 10. Delete data from table using Id.
 11. Delete data from table using key & value(String and Integer both case).
 12. Drop table.
-
+13. Create Table With Data and Image File.
+14. Insert Data With Image File.
+15. Update Image Data Using id Primary Key.
+16. Fetch Only Image Data Using id Primary Key.
+17. Fetch data + Image from Database using Id (JSONObject Formatted). Same as Fetch All Data Case.
 
 ★ HELPER FORMAT FOR DUMMY DATA.
 ```
@@ -302,6 +305,44 @@ if(sqLiteHelperTableData.insert()){
     Toast.makeText(this, "SUCCESSFULLY INSERTED", Toast.LENGTH_SHORT).show();
 }else{
     Toast.makeText(this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+}
+        
+```
+
+* 15. Update Image Data Using id Primary Key.
+```sh
+SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+if(sqLiteHelperTableData.updateFileUsingId(1,"image",blobFormatedData)){
+    Toast.makeText(MainActivity.this, "SUCCESSFULLY UPDATED", Toast.LENGTH_SHORT).show();
+}else{
+    Toast.makeText(MainActivity.this, "SOMETHING WRONG", Toast.LENGTH_SHORT).show();
+}
+        
+```
+
+* 16. Fetch Image Data Using id Primary Key.
+```sh
+SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master");
+Bitmap bitmap = sqLiteHelperTableData.getImageUsingId(2,"image");
+iv.setImageBitmap(bitmap);
+        
+```
+* 17. Fetch data + Image from Database using Id (JSONObject Formatted). Same as Fetch All Data Case.
+```sh
+SQLiteHelper sqLiteHelperTableData = new SQLiteHelper(MainActivity.this,"DBMaster","master",1);
+JSONObject jsonObject1 = sqLiteHelperTableData.fetchById();
+byte[] image = new byte[0];
+try {
+    image = (byte[]) jsonObject1.get("image");
+
+    Bitmap bmp= BitmapFactory.decodeByteArray(image, 0 , image.length);
+    or [USER MY ANOTHER LIBRARY ]
+    ImageInformation imageInformation = new ImageInformation(MainActivity.this);
+    Bitmap bitmapFromByteArray = imageInformation.getBitmapFromByteArray(image);
+
+    iv.setImageBitmap(bmp);
+} catch (JSONException e) {
+    e.printStackTrace();
 }
         
 ```
