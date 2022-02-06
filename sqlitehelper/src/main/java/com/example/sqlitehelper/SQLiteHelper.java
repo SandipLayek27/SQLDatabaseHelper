@@ -129,7 +129,7 @@ public class SQLiteHelper {
             if(createOrOpenDatabase()){
                 if(createTable()){
                     if(insertData()){
-                        Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
                         return true;
                     }else{
                         Toast.makeText(context, "DATA INSERT FAILURE", Toast.LENGTH_SHORT).show();
@@ -170,7 +170,7 @@ public class SQLiteHelper {
             if(createOrOpenDatabase()){
                 if(createTable()){
                     if(insertData()){
-                        Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "SUCCESSFULLY DATA INSERTED", Toast.LENGTH_SHORT).show();
                         return true;
                     }else{
                         Toast.makeText(context, "DATA INSERT FAILURE", Toast.LENGTH_SHORT).show();
